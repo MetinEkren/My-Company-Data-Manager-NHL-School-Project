@@ -11,7 +11,6 @@
       <change beforePath="$PROJECT_DIR$/Code/Categorieen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Code/Categorieen.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Code/Klanten.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Code/Klanten.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Code/Leveranciers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Code/Leveranciers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Code/MainMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Code/MainMenu.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Code/Medewerkers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Code/Medewerkers.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Code/Producten.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Code/Producten.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Code/VerzendDiensten.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Code/VerzendDiensten.cs" afterDir="false" />
@@ -134,7 +133,7 @@
       <workItem from="1774880236892" duration="1180000" />
       <workItem from="1776260793428" duration="2238000" />
       <workItem from="1776329193363" duration="1066000" />
-      <workItem from="1776331120697" duration="11397000" />
+      <workItem from="1776331120697" duration="12314000" />
     </task>
     <servers />
   </component>

@@ -42,9 +42,13 @@ public class Medewerkers
             
             // Sluit de applicatie volledig af
             Environment.Exit(0);
-        }
-        else
-        {
+            
+        }else if (keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
+            
+            MainMenu.HoofdMenu();
+            
+        }else {
+            
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
