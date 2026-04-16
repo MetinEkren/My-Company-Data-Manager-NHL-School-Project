@@ -7,14 +7,7 @@ public class VerzendDiensten
         var VerzendDienstenMenulines = new[]
         {
             "1) Klanten",
-            "2) Producten",
-            "3) Bestellingen",
-            "4) Medewerkers",
-            "5) Levenranciers",
-            "6) Categorieen",
-            "7) Bestelregels",
-            "8) Verzenddiensten",
-            "9) * Statistieken & Grafieken *",
+            "R) Ga terug",
             "X) Afsluiten"
             
         };
@@ -53,14 +46,7 @@ public class VerzendDiensten
             switch (keuze)
             {
                 case "1": /* Klanten */        break;
-                case "2": /* Producten */      break;
-                case "3": /* Bestellingen */   break;
-                case "4": /* Medewerkers */    break;
-                case "5": /* Leveranciers */   break;
-                case "6": /* Categorieen */    break;
-                case "7": /* Bestelregels */   break;
-                case "8": /* Verzenddiensten */break;
-                case "9": /* Statistieken */   break;
+               
                 default:
                     
                     // Maak het scherm leeg
