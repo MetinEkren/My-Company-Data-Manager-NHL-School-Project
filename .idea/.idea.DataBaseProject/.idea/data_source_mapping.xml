@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/Code/Program.cs" value="7176d0c4-2cf1-4f2a-ac05-599dcdf569a0" />
+    <file url="file://$PROJECT_DIR$/SQL/CreateAndFillDb.sql" value="7176d0c4-2cf1-4f2a-ac05-599dcdf569a0" />
+    <file url="file://$PROJECT_DIR$/SQL/InsertRecordsForShopx.sql" value="7176d0c4-2cf1-4f2a-ac05-599dcdf569a0" />
+    <file url="file://$PROJECT_DIR$/SQL/test.sql" value="7176d0c4-2cf1-4f2a-ac05-599dcdf569a0" />
+  </component>
+</project>
