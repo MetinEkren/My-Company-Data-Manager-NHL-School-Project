@@ -19,7 +19,7 @@ public class Klanten
             
         };
         
-        // Teken de box met het hoofdmenu en de titel
+        // Teken de box met het KlantenMenu en de titel
         BoxDraw.DrawBox(KlantenMenulines, titel: "Klanten");
         
         // Vraag de gebruiker om een keuze te maken

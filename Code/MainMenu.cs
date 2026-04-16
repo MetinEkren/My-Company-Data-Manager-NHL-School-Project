@@ -48,15 +48,24 @@ public class MainMenu
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": /* Klanten */        break;
-                case "2": /* Producten */      break;
-                case "3": /* Bestellingen */   break;
-                case "4": /* Medewerkers */    break;
-                case "5": /* Leveranciers */   break;
-                case "6": /* Categorieen */    break;
-                case "7": /* Bestelregels */   break;
-                case "8": /* Verzenddiensten */break;
+                case "1": /* Klanten */ Klanten.KlantenMenu(); break;
+                
+                case "2": /* Producten */ Producten.ProductenMenu(); break;
+                
+                case "3": /* Bestellingen */ Bestellingen.BestellingenMenu(); break;
+                
+                case "4": /* Medewerkers */ Medewerkers.MedewerkersMenu(); break;
+                
+                case "5": /* Leveranciers */ Leveranciers.LeveranciersMenu(); break;
+                
+                case "6": /* Categorieen */ Categorieen.CategorieenMenu(); break;
+                
+                case "7": /* Bestelregels */ BestelRegels.BestelRegelsMenu(); break;
+                
+                case "8": /* Verzenddiensten */ VerzendDiensten.VerzendDienstenMenu(); break;
+                
                 case "9": /* Statistieken */   break;
+                
                 default:
                     
                     // Maak het scherm leeg
