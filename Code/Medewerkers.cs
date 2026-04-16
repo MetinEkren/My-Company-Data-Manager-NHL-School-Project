@@ -1,6 +1,6 @@
 namespace DataBaseProject.Code;
 
-public class Create
+public class Medewerkers
 {
     
 }

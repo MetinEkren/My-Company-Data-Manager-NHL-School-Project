@@ -1,14 +1,29 @@
 ﻿using MySqlConnector;
 using System;
-string Databasename = "webwinkel";
-string Username = "root";
-string Password = "3561";
-string Server = "localhost";
-string Port = "3306";
-string ConnectionString = $"Server={Server};Port={Port};Database={Databasename};Uid={Username};Pwd={Password};";
+using DataBaseProject.Code;
 
-MySqlConnection conn = new MySqlConnection(ConnectionString);
+class Program
+{
+    public static MySqlConnection conn;
+    static void Main()
+    {
+        string databasename = "webwinkel";
+        string username     = "root";
+        string password     = "3561";
+        string server       = "localhost";
+        string port         = "3306";
+        string connectionString = $"Server={server};Port={port};Database={databasename};Uid={username};Pwd={password};";
 
-conn.Open();
+        conn = new MySqlConnection(connectionString);
+        conn.Open();
 
-conn.Close();
+        MainMenu.HoofdMenu();
+    }
+}
+
+
+// conn.Open();
+//
+// MainMenu.HoofdMenu();
+//
+// conn.Close();

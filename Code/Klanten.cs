@@ -1,10 +1,10 @@
 namespace DataBaseProject.Code;
 
-public class MainMenu
+public class Klanten
 {
-    public static void HoofdMenu()
+    public static void KlantenMenu()
     {
-        var HoofdMenulines = new[]
+        var KlantenMenulines = new[]
         {
             "1) Klanten",
             "2) Producten",
@@ -20,7 +20,7 @@ public class MainMenu
         };
         
         // Teken de box met het hoofdmenu en de titel
-        BoxDraw.DrawBox(HoofdMenulines, titel: "Welkom bij Bedrijf Data Manager");
+        BoxDraw.DrawBox(KlantenMenulines, titel: "Klanten");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");
@@ -69,8 +69,8 @@ public class MainMenu
                     Console.WriteLine("Druk op een toets om terug te gaan...");
                     Console.ReadKey();
                     
-                    // Roep het hoofdmenu opnieuw aan
-                    HoofdMenu();
+                    // Roep het Klanten menu opnieuw aan
+                    KlantenMenu();
                     break;
             }
         }
