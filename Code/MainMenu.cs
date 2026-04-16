@@ -48,21 +48,21 @@ public class MainMenu
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": /* Klanten */ Klanten.KlantenMenu(); break;
+                case "1": /* Klanten */ Console.Clear(); Klanten.KlantenMenu(); break;
                 
-                case "2": /* Producten */ Producten.ProductenMenu(); break;
+                case "2": /* Producten */ Console.Clear(); Producten.ProductenMenu(); break;
                 
-                case "3": /* Bestellingen */ Bestellingen.BestellingenMenu(); break;
+                case "3": /* Bestellingen */ Console.Clear(); Bestellingen.BestellingenMenu(); break;
                 
-                case "4": /* Medewerkers */ Medewerkers.MedewerkersMenu(); break;
+                case "4": /* Medewerkers */ Console.Clear(); Medewerkers.MedewerkersMenu(); break;
                 
-                case "5": /* Leveranciers */ Leveranciers.LeveranciersMenu(); break;
+                case "5": /* Leveranciers */ Console.Clear(); Leveranciers.LeveranciersMenu(); break;
                 
-                case "6": /* Categorieen */ Categorieen.CategorieenMenu(); break;
+                case "6": /* Categorieen */ Console.Clear(); Categorieen.CategorieenMenu(); break;
                 
-                case "7": /* Bestelregels */ BestelRegels.BestelRegelsMenu(); break;
+                case "7": /* Bestelregels */ Console.Clear(); BestelRegels.BestelRegelsMenu(); break;
                 
-                case "8": /* Verzenddiensten */ VerzendDiensten.VerzendDienstenMenu(); break;
+                case "8": /* Verzenddiensten */ Console.Clear(); VerzendDiensten.VerzendDienstenMenu(); break;
                 
                 case "9": /* Statistieken */   break;
                 
