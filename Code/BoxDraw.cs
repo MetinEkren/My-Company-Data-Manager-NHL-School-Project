@@ -1,4 +1,5 @@
 namespace DataBaseProject.Code;
+using MySqlConnector;
 
 public class BoxDraw
 {
@@ -38,6 +39,7 @@ public class BoxDraw
             
             // Teken de tussenlijn onder de titel
             Console.WriteLine(divider);
+            
         }
         else
         {
@@ -54,5 +56,12 @@ public class BoxDraw
 
         // Teken de onderste rand met '╚' en '╝' als hoeken
         Console.WriteLine("╚" + horizontal + "╝");
+    }
+    
+    static int GetAantalRijen(MySqlConnection conn, string tabel)
+    {
+        using MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM {tabel}", conn);
+        
+        return Convert.ToInt32(cmd.ExecuteScalar());
     }
 }

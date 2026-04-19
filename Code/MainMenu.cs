@@ -4,6 +4,9 @@ public class MainMenu
 {
     public static void HoofdMenu()
     {
+        // Maak het scherm leeg zodat het hoofdmenu niet meer zichtbaar is
+        Console.Clear();
+        
         // Maak een array aan met alle menuopties
         var HoofdMenulines = new[]
         {
@@ -17,7 +20,6 @@ public class MainMenu
             "8) Verzenddiensten",
             "9) * Statistieken & Grafieken *",
             "X) Afsluiten"
-            
         };
         
         // Teken de box met het hoofdmenu en de titel
@@ -65,7 +67,7 @@ public class MainMenu
                 
                 case "8": /* Verzenddiensten */ Console.Clear(); VerzendDiensten.VerzendDienstenMenu(); break;
                 
-                case "9": /* Statistieken */   break;
+                case "9": /* Statistieken */ Console.Clear(); Statistieken.StatistiekenMenu(); break;
                 
                 default:
                     

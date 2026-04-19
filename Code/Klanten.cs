@@ -1,9 +1,13 @@
 namespace DataBaseProject.Code;
+using MySqlConnector;
 
 public class Klanten
 {
     public static void KlantenMenu()
     {
+        // Maak het scherm leeg zodat het hoofdmenu niet meer zichtbaar is
+        Console.Clear();
+        
         // Maak een array aan met alle menuopties
         var KlantenMenulines = new[]
         {
@@ -49,7 +53,11 @@ public class Klanten
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": /* Klanten */        break;
+                case "1": ToonKlanten(); break;
+                case "2": ZoekKlant(); break;
+                case "3": VoegKlantToe(); break;
+                case "4": WijzigKlant(); break;
+                case "5": VerwijderKlant(); break;
                 
                 default:
                     
@@ -68,5 +76,54 @@ public class Klanten
                     break;
             }
         }
+    }
+
+    private static void ToonKlanten()
+    {
+        // int pageSize = 10;
+        // int pagina = 1;
+        // int totaal = BoxDraw.GetAantalRijen(Program.conn, "Klanten");
+
+       
+        Console.Clear();
+      
+        // string sql = @"SELECT *
+        //                 FROM Klanten 
+        //                LIMIT @limiet OFFSET @offset";
+        // Maak de SQL query aan
+        string sql = "SELECT * FROM Klanten";
+        
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        {
+            cmd.Parameters.AddWithValue("@depname", "Sales");
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string name = reader.GetString("name");
+                string description = reader.GetString("description");
+                Console.WriteLine("{0} = {1}", name, description);
+            }
+            reader.Close();
+        }
+    }
+    
+    private static void ZoekKlant()
+    {
+        
+    }
+    
+    private static void VoegKlantToe()
+    {
+        
+    }
+    
+    private static void WijzigKlant()
+    {
+        
+    }
+    
+    private static void VerwijderKlant()
+    {
+        
     }
 }
