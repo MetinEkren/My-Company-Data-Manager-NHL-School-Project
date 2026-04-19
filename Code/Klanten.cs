@@ -95,15 +95,20 @@ public class Klanten
         
         using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
         {
-            cmd.Parameters.AddWithValue("@depname", "Sales");
+            //cmd.Parameters.AddWithValue("@depname", "Sales");
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                string name = reader.GetString("name");
-                string description = reader.GetString("description");
-                Console.WriteLine("{0} = {1}", name, description);
+                string naam = reader.GetString("KlantNaam");
+                Console.WriteLine("{0}", naam);
             }
+            
+            Console.WriteLine("Druk op een toets om terug te gaan...");
+            Console.ReadKey();
+            
             reader.Close();
+            KlantenMenu();
+            
         }
     }
     
