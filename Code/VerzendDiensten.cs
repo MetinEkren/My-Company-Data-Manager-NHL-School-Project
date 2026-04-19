@@ -4,6 +4,7 @@ public class VerzendDiensten
 {
     public static void VerzendDienstenMenu()
     {
+        // Maak een array aan met alle menuopties
         var VerzendDienstenMenulines = new[]
         {
             "1) Klanten",

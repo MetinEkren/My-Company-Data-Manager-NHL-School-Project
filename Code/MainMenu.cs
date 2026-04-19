@@ -4,6 +4,7 @@ public class MainMenu
 {
     public static void HoofdMenu()
     {
+        // Maak een array aan met alle menuopties
         var HoofdMenulines = new[]
         {
             "1) Klanten",

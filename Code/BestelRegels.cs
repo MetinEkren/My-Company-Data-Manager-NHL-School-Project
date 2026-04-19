@@ -4,6 +4,7 @@ public class BestelRegels
 {
     public static void BestelRegelsMenu()
     {
+        // Maak een array aan met alle menuopties
         var BestelRegelsMenulines = new[]
         {
             "1) Klanten",

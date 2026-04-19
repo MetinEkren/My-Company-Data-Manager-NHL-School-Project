@@ -4,6 +4,7 @@ public class Medewerkers
 {
      public static void MedewerkersMenu()
     {
+        // Maak een array aan met alle menuopties
         var MedewerkersMenulines = new[]
         {
             "1) Klanten",

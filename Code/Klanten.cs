@@ -4,12 +4,16 @@ public class Klanten
 {
     public static void KlantenMenu()
     {
+        // Maak een array aan met alle menuopties
         var KlantenMenulines = new[]
         {
-            "1) Klanten",
+            "1) Toon alle klanten",
+            "2) Zoek op naam",
+            "3) Voeg klant toe",
+            "4) Wijzig klant gegevens op id",
+            "5) Klant verwijderen",
             "R) Ga terug",
             "X) Afsluiten"
-            
         };
         
         // Teken de box met het KlantenMenu en de titel

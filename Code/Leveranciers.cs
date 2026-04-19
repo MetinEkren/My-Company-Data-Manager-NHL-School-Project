@@ -4,6 +4,7 @@ public class Leveranciers
 {
     public static void LeveranciersMenu()
     {
+        // Maak een array aan met alle menuopties
         var LeveranciersMenulines = new[]
         {
             "1) Klanten",
