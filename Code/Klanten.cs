@@ -9,7 +9,7 @@ public class Klanten
         Console.Clear();
         
         // Maak een array aan met alle menuopties
-        var KlantenMenulines = new[]
+        var klantenMenulines = new[]
         {
             "1) Toon alle klanten",
             "2) Zoek op naam",
@@ -21,7 +21,7 @@ public class Klanten
         };
         
         // Teken de box met het KlantenMenu en de titel
-        BoxDraw.DrawBox(KlantenMenulines, titel: "Klanten");
+        BoxDraw.DrawBox(klantenMenulines, titel: "Klanten");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");
@@ -80,35 +80,64 @@ public class Klanten
 
     private static void ToonKlanten()
     {
-        // int pageSize = 10;
-        // int pagina = 1;
-        // int totaal = BoxDraw.GetAantalRijen(Program.conn, "Klanten");
-
-       
         Console.Clear();
-      
-        // string sql = @"SELECT *
-        //                 FROM Klanten 
-        //                LIMIT @limiet OFFSET @offset";
+        
         // Maak de SQL query aan
+        // string sql = "SELECT KlantID, KlantNaam FROM Klanten";
+        
+        // Haal ALLES op uit de klanten tabel
         string sql = "SELECT * FROM Klanten";
         
         using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
         {
-            //cmd.Parameters.AddWithValue("@depname", "Sales");
             MySqlDataReader reader = cmd.ExecuteReader();
+            
+            // Kolomnamen voor de header
+            // var kolomNamen = new List<string> { "ID", "Klant Naam" };
+            
+            // Haal automatisch alle kolomnamen op uit de database
+            var kolomNamen = new List<string>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                // reader.GetName() geeft de naam van elke kolom
+                kolomNamen.Add(reader.GetName(i));
+            }
+            
+            // Alle rijen met data / Lees alle rijen uit de database
+            var rijen = new List<List<string>>();
+        
             while (reader.Read())
             {
-                string naam = reader.GetString("KlantNaam");
-                Console.WriteLine("{0}", naam);
+                // // Lees de KlantID en KlantNaam uit elke rij
+                // int id       = reader.GetInt32("KlantID");
+                // string naam  = reader.GetString("KlantNaam");
+                //
+                // // Elke rij is een lijst van strings
+                // rijen.Add(new List<string> { id.ToString(), naam });
+                
+                var rij = new List<string>();
+            
+                // Loop door elke kolom en lees de waarde
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    // Zet elke waarde om naar string
+                    // IsDBNull controleert of de waarde leeg (NULL) is
+                    rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
+                }
+            
+                rijen.Add(rij);
             }
+            
+            reader.Close();
+            
+            // Teken de tabel
+            BoxDraw.DrawTable(kolomNamen, rijen, titel: "Alle Klanten");
             
             Console.WriteLine("Druk op een toets om terug te gaan...");
             Console.ReadKey();
             
-            reader.Close();
-            KlantenMenu();
             
+            KlantenMenu();
         }
     }
     

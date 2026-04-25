@@ -2,10 +2,13 @@ namespace DataBaseProject.Code;
 
 public class Medewerkers
 {
+    // public static string TableName = "Medewerkers";
+    // public static List<string> Columns = ["MedewerkerID", "Achternaam", "Voornaam", "Geboortedatum", "Notities", "Foto"];
+    //
      public static void MedewerkersMenu()
     {
         // Maak een array aan met alle menuopties
-        var MedewerkersMenulines = new[]
+        var medewerkersMenulines = new[]
         {
             "1) Klanten",
             "R) Ga terug",
@@ -14,7 +17,7 @@ public class Medewerkers
         };
         
         // Teken de box met het MedewerkersMenu en de titel
-        BoxDraw.DrawBox(MedewerkersMenulines, titel: "Medewerkers");
+        BoxDraw.DrawBox(medewerkersMenulines, titel: "Medewerkers");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");
@@ -46,7 +49,7 @@ public class Medewerkers
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": /* Klanten */        break;
+                case "1": ToonMedewerkers(); break;
                 
                 default:
                     
@@ -65,5 +68,10 @@ public class Medewerkers
                     break;
             }
         }
+    }
+
+    public static void ToonMedewerkers()
+    {
+        
     }
 }

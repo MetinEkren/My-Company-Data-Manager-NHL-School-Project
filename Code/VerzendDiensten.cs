@@ -5,7 +5,7 @@ public class VerzendDiensten
     public static void VerzendDienstenMenu()
     {
         // Maak een array aan met alle menuopties
-        var VerzendDienstenMenulines = new[]
+        var verzendDienstenMenulines = new[]
         {
             "1) Klanten",
             "R) Ga terug",
@@ -14,7 +14,7 @@ public class VerzendDiensten
         };
         
         // Teken de box met het VerzendDienstenMenu en de titel
-        BoxDraw.DrawBox(VerzendDienstenMenulines, titel: "VerzendDiensten");
+        BoxDraw.DrawBox(verzendDienstenMenulines, titel: "VerzendDiensten");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");

@@ -5,7 +5,7 @@ public class Bestellingen
     public static void BestellingenMenu()
     {
         // Maak een array aan met alle menuopties
-        var BestellingenMenulines = new[]
+        var bestellingenMenulines = new[]
         {
             "1) Klanten",
             "R) Ga terug",
@@ -14,7 +14,7 @@ public class Bestellingen
         };
         
         // Teken de box met het BestellingenMenu en de titel
-        BoxDraw.DrawBox(BestellingenMenulines, titel: "Bestellingen");
+        BoxDraw.DrawBox(bestellingenMenulines, titel: "Bestellingen");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");

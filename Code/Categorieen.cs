@@ -5,7 +5,7 @@ public class Categorieen
     public static void CategorieenMenu()
     {
         // Maak een array aan met alle menuopties
-        var CategorieenMenulines = new[]
+        var categorieenMenulines = new[]
         {
             "1) Klanten",
             "R) Ga terug",
@@ -14,7 +14,7 @@ public class Categorieen
         };
         
         // Teken de box met het CategorieenMenu en de titel
-        BoxDraw.DrawBox(CategorieenMenulines, titel: "Categorieen");
+        BoxDraw.DrawBox(categorieenMenulines, titel: "Categorieen");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");

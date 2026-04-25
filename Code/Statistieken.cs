@@ -5,7 +5,7 @@ public class Statistieken
      public static void StatistiekenMenu()
     {
         // Maak een array aan met alle menuopties
-        var StatistiekenMenulines = new[]
+        var statistiekenMenulines = new[]
         {
             "1) Toon alle klanten",
             "2) Sla grafiek op als PNG",
@@ -14,7 +14,7 @@ public class Statistieken
         };
         
         // Teken de box met het StatistiekenMenu en de titel
-        BoxDraw.DrawBox(StatistiekenMenulines, titel: "Statistieken");
+        BoxDraw.DrawBox(statistiekenMenulines, titel: "Statistieken");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");

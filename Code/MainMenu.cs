@@ -8,7 +8,7 @@ public class MainMenu
         Console.Clear();
         
         // Maak een array aan met alle menuopties
-        var HoofdMenulines = new[]
+        var hoofdMenulines = new[]
         {
             "1) Klanten",
             "2) Producten",
@@ -23,7 +23,7 @@ public class MainMenu
         };
         
         // Teken de box met het hoofdmenu en de titel
-        BoxDraw.DrawBox(HoofdMenulines, titel: "Welkom bij Bedrijf Data Manager");
+        BoxDraw.DrawBox(hoofdMenulines, titel: "Welkom bij Bedrijf Data Manager");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");

@@ -5,7 +5,7 @@ public class Producten
     public static void ProductenMenu()
     {
         // Maak een array aan met alle menuopties
-        var ProductenMenulines = new[]
+        var productenMenulines = new[]
         {
             "1) Klanten",
             "R) Ga terug",
@@ -14,7 +14,7 @@ public class Producten
         };
         
         // Teken de box met het ProductenMenu en de titel
-        BoxDraw.DrawBox(ProductenMenulines, titel: "Producten");
+        BoxDraw.DrawBox(productenMenulines, titel: "Producten");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");

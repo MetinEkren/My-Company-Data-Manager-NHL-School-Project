@@ -5,7 +5,7 @@ public class Leveranciers
     public static void LeveranciersMenu()
     {
         // Maak een array aan met alle menuopties
-        var LeveranciersMenulines = new[]
+        var leveranciersMenulines = new[]
         {
             "1) Klanten",
             "R) Ga terug",
@@ -14,7 +14,7 @@ public class Leveranciers
         };
         
         // Teken de box met het LeveranciersMenu en de titel
-        BoxDraw.DrawBox(LeveranciersMenulines, titel: "Leveranciers");
+        BoxDraw.DrawBox(leveranciersMenulines, titel: "Leveranciers");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");

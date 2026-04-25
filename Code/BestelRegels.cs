@@ -5,7 +5,7 @@ public class BestelRegels
     public static void BestelRegelsMenu()
     {
         // Maak een array aan met alle menuopties
-        var BestelRegelsMenulines = new[]
+        var bestelRegelsMenulines = new[]
         {
             "1) Klanten",
             "R) Ga terug",
@@ -14,7 +14,7 @@ public class BestelRegels
         };
         
         // Teken de box met het BestelRegelsMenu en de titel
-        BoxDraw.DrawBox(BestelRegelsMenulines, titel: "BestelRegels");
+        BoxDraw.DrawBox(bestelRegelsMenulines, titel: "BestelRegels");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");
