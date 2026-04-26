@@ -53,7 +53,7 @@ public class Klanten
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": ToonKlanten(); break;
+                case "1": keuzeklanten(); break;
                 case "2": ZoekKlant(); break;
                 case "3": VoegKlantToe(); break;
                 case "4": WijzigKlant(); break;
@@ -77,23 +77,91 @@ public class Klanten
             }
         }
     }
-
-    private static void ToonKlanten()
+    
+    private static void keuzeklanten()
     {
         Console.Clear();
         
-        // Maak de SQL query aan
-        // string sql = "SELECT KlantID, KlantNaam FROM Klanten";
+        // Maak een array aan met alle menuopties
+        var klantenkeuze = new[]
+        {
+            "1) Toon alle klanten",
+            "2) Toon alleen naam en id",
+            "R) Ga terug",
+            "X) Afsluiten"
+        };
         
-        // Haal ALLES op uit de klanten tabel
-        string sql = "SELECT * FROM Klanten";
+        // Teken de box met het KlantenMenu en de titel
+        BoxDraw.DrawBox(klantenkeuze, titel: "Klanten");
+        
+        // Vraag de gebruiker om een keuze te maken
+        Console.Write("Keuze: ");
+        
+        // Lees wat de gebruiker intypt
+        string keuze = Console.ReadLine();
+
+        Controlekeuze(keuze);
+    }
+    
+    private static void Controlekeuze(string keuze)
+    {
+        // Controleer of de gebruiker wil afsluiten (hoofdletter of kleine letter x)
+        if (keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
+        {
+            // Sluit de databaseverbinding
+            Program.conn.Close();
+            
+            // Maak het scherm leeg
+            Console.Clear();
+            
+            // Toon een afscheidsbericht 
+            Console.WriteLine("Totziens!");
+            
+            // Sluit de applicatie volledig af
+            Environment.Exit(0);
+            
+        }else if (keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
+            
+            KlantenMenu();
+            
+        }else
+        {
+            string sql = "";
+            // Verwerk de keuze van de gebruiker
+            switch (keuze)
+            {
+                // Haal ALLES op uit de klanten tabel
+                case "1":
+                    sql = "SELECT * FROM Klanten"; SqlklantUitvoeren(keuze, sql);break;
+                
+                // Maak de SQL query aan toon id en naam
+                case "2": 
+                    sql = "SELECT KlantID, KlantNaam FROM Klanten"; SqlklantUitvoeren(keuze, sql);  break;
+                default:
+                    
+                    // Maak het scherm leeg
+                    Console.Clear();
+                    
+                    // Vertel de gebruiker dat de keuze ongeldig is
+                    Console.WriteLine("Ongeldige keuze, probeer opnieuw. Gebruik de cijfers!!!!");
+
+                    // Wacht totdat de gebruiker op een toets drukt
+                    Console.WriteLine("Druk op een toets om terug te gaan...");
+                    Console.ReadKey();
+                    
+                    // Roep het Klanten menu opnieuw aan
+                    keuzeklanten();
+                    break;
+            }
+        }
+    }
+    private static void SqlklantUitvoeren( string keuze, string sql)
+    {
+        Console.Clear();
         
         using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
         {
             MySqlDataReader reader = cmd.ExecuteReader();
-            
-            // Kolomnamen voor de header
-            // var kolomNamen = new List<string> { "ID", "Klant Naam" };
             
             // Haal automatisch alle kolomnamen op uit de database
             var kolomNamen = new List<string>();
@@ -108,24 +176,29 @@ public class Klanten
         
             while (reader.Read())
             {
-                // // Lees de KlantID en KlantNaam uit elke rij
-                // int id       = reader.GetInt32("KlantID");
-                // string naam  = reader.GetString("KlantNaam");
-                //
-                // // Elke rij is een lijst van strings
-                // rijen.Add(new List<string> { id.ToString(), naam });
-                
-                var rij = new List<string>();
-            
-                // Loop door elke kolom en lees de waarde
-                for (int i = 0; i < reader.FieldCount; i++)
+                if (keuze == "1")
                 {
-                    // Zet elke waarde om naar string
-                    // IsDBNull controleert of de waarde leeg (NULL) is
-                    rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
-                }
+                    var rij = new List<string>();
             
-                rijen.Add(rij);
+                    // Loop door elke kolom en lees de waarde
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        // Zet elke waarde om naar string
+                        // IsDBNull controleert of de waarde leeg (NULL) is
+                        rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
+                    }
+            
+                    rijen.Add(rij);
+                    
+                }else if (keuze == "2")
+                {
+                    // Lees de KlantID en KlantNaam uit elke rij
+                    int id       = reader.GetInt32("KlantID");
+                    string naam  = reader.GetString("KlantNaam");
+                    
+                    // Elke rij is een lijst van strings
+                    rijen.Add(new List<string> { id.ToString(), naam });
+                }
             }
             
             reader.Close();
@@ -136,14 +209,69 @@ public class Klanten
             Console.WriteLine("Druk op een toets om terug te gaan...");
             Console.ReadKey();
             
-            
-            KlantenMenu();
+            keuzeklanten();
         }
     }
     
     private static void ZoekKlant()
     {
+        Console.Write("Zoek op Klantnaam: ");
+        string zoek = Console.ReadLine();
+
+        Console.Clear();
         
+        string sql = "SELECT * FROM Klanten WHERE KlantNaam LIKE @zoekKlant";
+        
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        {
+            // @zoek tegen sql injectie
+            cmd.Parameters.AddWithValue("@zoekKlant", "%" + zoek + "%");
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            
+            // Haal automatisch alle kolomnamen op uit de database
+            var kolomNamen = new List<string>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                // reader.GetName() geeft de naam van elke kolom
+                kolomNamen.Add(reader.GetName(i));
+            }
+            
+            // Alle rijen met data / Lees alle rijen uit de database
+            var rijen = new List<List<string>>();
+            
+            while (reader.Read())
+            {
+                var rij = new List<string>();
+                
+                // Loop door elke kolom en lees de waarde
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    // Controleer of de waarde in de database leeg (NULL) is
+                    // Als het leeg is voeg de tekst "NULL" toe aan de rij
+                    // Als het niet leeg is zet de waarde om naar tekst met ToString() en voeg het toe
+                    rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
+                }
+            
+                rijen.Add(rij);
+            }
+            reader.Close();
+            
+            if (rijen.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Geen klanten gevonden.");
+                Console.WriteLine("Druk op een toets om terug te gaan...");
+                Console.ReadKey();
+                KlantenMenu();
+            }
+            else
+            {
+                BoxDraw.DrawTable(kolomNamen, rijen, titel: "Zoekresultaten");
+                Console.WriteLine("Druk op een toets om terug te gaan...");
+                Console.ReadKey();
+                KlantenMenu();
+            }
+        }
     }
     
     private static void VoegKlantToe()
