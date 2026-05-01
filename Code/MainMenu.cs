@@ -51,23 +51,15 @@ public class MainMenu
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": /* Klanten */ Console.Clear(); Klanten.KlantenMenu(); break;
-                
-                case "2": /* Producten */ Console.Clear(); Producten.ProductenMenu(); break;
-                
-                case "3": /* Bestellingen */ Console.Clear(); Bestellingen.BestellingenMenu(); break;
-                
-                case "4": /* Medewerkers */ Console.Clear(); Medewerkers.MedewerkersMenu(); break;
-                
-                case "5": /* Leveranciers */ Console.Clear(); Leveranciers.LeveranciersMenu(); break;
-                
-                case "6": /* Categorieen */ Console.Clear(); Categorieen.CategorieenMenu(); break;
-                
-                case "7": /* Bestelregels */ Console.Clear(); BestelRegels.BestelRegelsMenu(); break;
-                
-                case "8": /* Verzenddiensten */ Console.Clear(); VerzendDiensten.VerzendDienstenMenu(); break;
-                
-                case "9": /* Statistieken */ Console.Clear(); Statistieken.StatistiekenMenu(); break;
+                case "1": Console.Clear(); Klanten.KlantenMenu(); break;
+                case "2": Console.Clear(); Producten.ProductenMenu(); break;
+                case "3": Console.Clear(); Bestellingen.BestellingenMenu(); break;
+                case "4": Console.Clear(); Medewerkers.MedewerkersMenu(); break;
+                case "5": Console.Clear(); Leveranciers.LeveranciersMenu(); break;
+                case "6": Console.Clear(); Categorieen.CategorieenMenu(); break;
+                case "7": Console.Clear(); BestelRegels.BestelRegelsMenu(); break;
+                case "8": Console.Clear(); VerzendDiensten.VerzendDienstenMenu(); break;
+                case "9": Console.Clear(); Statistieken.StatistiekenMenu(); break;
                 
                 default:
                     

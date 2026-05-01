@@ -16,6 +16,7 @@ public class Klanten
             "3) Voeg klant toe",
             "4) Wijzig klant gegevens op id",
             "5) Klant verwijderen",
+            "6) Toon bestellingen van een klant",
             "R) Ga terug",
             "X) Afsluiten"
         };
@@ -58,6 +59,7 @@ public class Klanten
                 case "3": VoegKlantToe(); break;
                 case "4": WijzigKlant(); break;
                 case "5": VerwijderKlant(); break;
+                case "6": BestelingenMetKlant(); break;
                 
                 default:
                     
@@ -71,7 +73,7 @@ public class Klanten
                     Console.WriteLine("Druk op een toets om terug te gaan...");
                     Console.ReadKey();
                     
-                    // Roep het Klanten menu opnieuw aan
+                    // Roep de Klanten menu opnieuw aan
                     KlantenMenu();
                     break;
             }
@@ -149,7 +151,7 @@ public class Klanten
                     Console.WriteLine("Druk op een toets om terug te gaan...");
                     Console.ReadKey();
                     
-                    // Roep het Klanten menu opnieuw aan
+                    // Roep de Klanten menu opnieuw aan
                     keuzeklanten();
                     break;
             }
@@ -215,8 +217,7 @@ public class Klanten
     
     private static void ZoekKlant()
     {
-        Console.Write("Zoek op Klantnaam: ");
-        string zoek = Console.ReadLine();
+        string klantNaam = LeesVerplichtVeld("Zoek op KlantNaam: ");
 
         Console.Clear();
         
@@ -224,8 +225,8 @@ public class Klanten
         
         using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
         {
-            // @zoek tegen sql injectie
-            cmd.Parameters.AddWithValue("@zoekKlant", "%" + zoek + "%");
+            // @zoekKlant tegen sql injectie
+            cmd.Parameters.AddWithValue("@zoekKlant", "%" + klantNaam + "%");
             using MySqlDataReader reader = cmd.ExecuteReader();
             
             // Haal automatisch alle kolomnamen op uit de database
@@ -276,7 +277,59 @@ public class Klanten
     
     private static void VoegKlantToe()
     {
+        Console.Clear();
+        Console.WriteLine("Geef elke vraag een antwoord");
         
+        string naam     = LeesVerplichtVeld("Wat is de KlantNaam: ");
+        string contact  = LeesVerplichtVeld("Wie is de ContactPersoon: ");
+        string adres    = LeesVerplichtVeld("Wat is zijn of haar Adres: ");
+        string stad     = LeesVerplichtVeld("Welke Stad: ");
+        string postcode = LeesVerplichtVeld("Wat is zijn of haar Postcode: ");
+        string land     = LeesVerplichtVeld("Welke Land: ");
+
+        string sql = "INSERT INTO Klanten (KlantNaam, ContactPersoon, Adres, Stad, Postcode, Land) " +
+                     "VALUES (@naam, @contact, @adres, @stad, @postcode, @land)";
+        
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        {
+            cmd.Parameters.AddWithValue("@naam", naam);
+            cmd.Parameters.AddWithValue("@contact", contact);
+            cmd.Parameters.AddWithValue("@adres", adres);
+            cmd.Parameters.AddWithValue("@stad", stad);
+            cmd.Parameters.AddWithValue("@postcode", postcode);
+            cmd.Parameters.AddWithValue("@land", land);
+            
+            // ExecuteNonQuery werkt voor INSERT, UPDATE, DELETE
+            cmd.ExecuteNonQuery();
+            Console.WriteLine("Klant toegevoegd! Nieuw ID: " + cmd.LastInsertedId);
+            
+            Console.WriteLine("Druk op een toets om terug te gaan...");
+            Console.ReadKey();
+            KlantenMenu();
+        }
+    }
+    
+    //een methode om zekker te weten dat we een waarde krijgen
+    private static string LeesVerplichtVeld(string vraag)
+    {
+        string invoer;
+    
+        do
+        {
+            Console.Write(vraag);
+            invoer = Console.ReadLine();
+        
+            // Controleer of de invoer leeg, null of alleen spaties is
+            if (string.IsNullOrWhiteSpace(invoer))
+            {
+                Console.Clear();
+                Console.WriteLine("Dit veld is verplicht! Probeer opnieuw.");
+            }
+        
+        } while (string.IsNullOrWhiteSpace(invoer));
+    
+        // Verwijder spaties aan het begin en einde
+        return invoer.Trim();
     }
     
     private static void WijzigKlant()
@@ -285,6 +338,11 @@ public class Klanten
     }
     
     private static void VerwijderKlant()
+    {
+        
+    }
+    
+    private static void BestelingenMetKlant()
     {
         
     }
