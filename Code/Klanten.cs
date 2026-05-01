@@ -54,7 +54,7 @@ public class Klanten
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": keuzeklanten(); break;
+                case "1": Keuzeklanten(); break;
                 case "2": ZoekKlant(); break;
                 case "3": VoegKlantToe(); break;
                 case "4": WijzigKlant(); break;
@@ -80,7 +80,7 @@ public class Klanten
         }
     }
     
-    private static void keuzeklanten()
+    private static void Keuzeklanten()
     {
         Console.Clear();
         
@@ -152,7 +152,7 @@ public class Klanten
                     Console.ReadKey();
                     
                     // Roep de Klanten menu opnieuw aan
-                    keuzeklanten();
+                    Keuzeklanten();
                     break;
             }
         }
@@ -211,7 +211,7 @@ public class Klanten
             Console.WriteLine("Druk op een toets om terug te gaan...");
             Console.ReadKey();
             
-            keuzeklanten();
+            Keuzeklanten();
         }
     }
     
