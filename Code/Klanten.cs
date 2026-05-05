@@ -544,6 +544,7 @@ public class Klanten
                 
                 // ExecuteNonQuery werkt voor INSERT, UPDATE, DELETE
                 int aantalRijenBijgewerkt = updateCmd.ExecuteNonQuery();
+                
                 Console.WriteLine(aantalRijenBijgewerkt > 0 ? "Klant bijgewerkt!" : "Niets gewijzigd.");
                 
                 Console.WriteLine("Druk op een toets om terug te gaan...");
