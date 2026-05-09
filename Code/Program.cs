@@ -20,13 +20,3 @@ class Program
         MainMenu.HoofdMenu();
     }
 }
-
-// string klantId = reader.GetString("KlantID");
-// string naam = reader.GetString("KlantNaam");
-// Console.WriteLine("{0} = {1}", klantId, naam);
-
-// conn.Open();
-//
-// MainMenu.HoofdMenu();
-//
-// conn.Close();

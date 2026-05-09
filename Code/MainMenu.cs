@@ -11,13 +11,13 @@ public class MainMenu
         var hoofdMenulines = new[]
         {
             "1) Klanten",
-            "2) Producten",
-            "3) Bestellingen",
-            "4) Medewerkers",
-            "5) Levenranciers",
-            "6) Categorieen",
-            "7) Bestelregels",
-            "8) Verzenddiensten",
+            "2) Producten (Werkt nog niet)",
+            "3) Bestellingen (Werkt nog niet)",
+            "4) Medewerkers (Werkt nog niet)",
+            "5) Levenranciers (Werkt nog niet)",
+            "6) Categorieen (Werkt nog niet)",
+            "7) Bestelregels (Werkt nog niet)",
+            "8) Verzenddiensten (Werkt nog niet)",
             "9) * Statistieken & Grafieken *",
             "X) Afsluiten"
         };

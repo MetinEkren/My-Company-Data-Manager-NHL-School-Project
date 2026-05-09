@@ -250,7 +250,7 @@ public class Klanten
         }
     }
 
-    private static (List<string> kolomNamen, List<List<string>> rijen) KollomenEnRijen(MySqlDataReader reader)
+    public static (List<string> kolomNamen, List<List<string>> rijen) KollomenEnRijen(MySqlDataReader reader)
     {
         var kolomNamen = new List<string>();
         for (int i = 0; i < reader.FieldCount; i++)

@@ -103,13 +103,15 @@ public class BoxDraw
         for (int i = 0; i < kolomNamen.Count; i++)
         {
             headerLijn += new string('═', kolomBreedtes[i] + 2);
+            // Nog niet laatste kolom = ╪
+            // Laatste kolom = ╣
             headerLijn += (i < kolomNamen.Count - 1) ? "╪" : "╣";
         }
         
-        // ── Teken de bovenkant ──────────────────────────────
+        // Teken de bovenkant 
         Console.WriteLine(bovenkant);
         
-        // ── Teken de titel als die er is ───────────────────
+        // Teken de titel als die er is 
         if (titel != null)
         {
             int totalPadding = totaalBreedte - titel.Length;
@@ -119,7 +121,7 @@ public class BoxDraw
             Console.WriteLine(tussenlijn);
         }
         
-        // ── Teken de kolomnamen (header) ───────────────────
+        // Teken de kolomnamen (header)
         string headerRegel = "║";
         for (int i = 0; i < kolomNamen.Count; i++)
         {
@@ -130,7 +132,7 @@ public class BoxDraw
         Console.WriteLine(headerRegel);
         Console.WriteLine(headerLijn);
         
-        // ── Teken elke rij ─────────────────────────────────
+        // Teken elke rij
         foreach (var rij in rijen)
         {
             string regel = "║";
@@ -140,9 +142,21 @@ public class BoxDraw
                 regel += (i < rij.Count - 1) ? "│" : "║";
             }
             Console.WriteLine(regel);
+            
+            //teken elke scheiding van een rij
+            if (rij != rijen.Last())
+            {
+                string rijScheiding = "╠";
+                for (int i = 0; i < kolomNamen.Count; i++)
+                {
+                    rijScheiding += new string('─', kolomBreedtes[i] + 2);
+                    rijScheiding += (i < kolomNamen.Count - 1) ? "┼" : "╣";
+                }
+                Console.WriteLine(rijScheiding);
+            }
         }
         
-        // ── Teken de onderkant ─────────────────────────────
+        // Teken de onderkant 
         Console.WriteLine(onderkant);
     }
 }
