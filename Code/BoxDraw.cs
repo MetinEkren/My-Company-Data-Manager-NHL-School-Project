@@ -1,14 +1,14 @@
 namespace DataBaseProject.Code;
-using MySqlConnector;
 
-public class BoxDraw
+public static class BoxDraw
 {
-    public static void DrawBox(string[] lines, string titel = null)
+    public static void DrawBox(string[] lines, string? titel)
     {
         // Zoek de langste line in de array en sla de lengte op als innerWidth
         int innerWidth = lines.Max(line => line.Length);
         
         // Als er een titel is, controleer of de titel breder is dan de langste regel
+        // zeg maar je menuoptie heeft een langer tekst dan wordt de breedte van de box berekend van uit deze lenghte
         if (titel != null)
         {
             // Gebruik de grootste waarde tussen de innerWidth en de lengte van de titel
@@ -19,7 +19,7 @@ public class BoxDraw
         string horizontal = new string('═', innerWidth + 2);
         
         // Maak de tussenlijn met '╠' en '╣' aan de uiteinden
-        string divider    = "╠" + horizontal + "╣";
+        string divider = "╠" + horizontal + "╣";
 
         // Controleer of er een titel is meegegeven
         if (titel != null)
@@ -51,17 +51,23 @@ public class BoxDraw
         foreach (var line in lines)
         {
             // Teken de regel met '║' aan beide kanten, vul korte regels aan met spaties rechts
+            // PadRight voegt alleen spaties toe als de tekst KORTER is dan innerWidth
+            // Als de tekst al even lang of langer is, doet hij niks!
             Console.WriteLine("║ " + line.PadRight(innerWidth) + " ║");
         }
 
-        // Teken de onderste rand met '╚' en '╝' als hoeken
+        // Tekent de onderste rand met '╚' en '╝' als hoeken
         Console.WriteLine("╚" + horizontal + "╝");
     }
     
-    public static void DrawTable(List<string> kolomNamen, List<List<string>> rijen, string titel = null)
+    public static void DrawTable(List<string> kolomNamen, List<List<string>> rijen, string? titel)
     {
         // Bereken de breedte van elke kolom op basis van de data en kolomnaam
-        var kolomBreedtes = new int[kolomNamen.Count];
+        //var kolomBreedtes = new int[kolomNamen.Count];
+        
+        int aantalKolommen   = kolomNamen.Count;
+        // Maak een array aan met een vakje voor elke kolom om de breedte in op te slaan
+        var kolomBreedtes    = new int[aantalKolommen];
         
         // Controleer eerst de breedte van de kolomnamen zelf
         for (int i = 0; i < kolomNamen.Count; i++)
@@ -141,6 +147,7 @@ public class BoxDraw
                 regel += " " + rij[i].PadRight(kolomBreedtes[i]) + " ";
                 regel += (i < rij.Count - 1) ? "│" : "║";
             }
+            
             Console.WriteLine(regel);
             
             //teken elke scheiding van een rij

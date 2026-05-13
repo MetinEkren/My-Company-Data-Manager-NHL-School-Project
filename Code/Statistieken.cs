@@ -1,8 +1,7 @@
 namespace DataBaseProject.Code;
 using MySqlConnector;
-using ScottPlot;
 
-public class Statistieken
+public static class Statistieken
 {
      public static void StatistiekenMenu()
     {
@@ -22,13 +21,13 @@ public class Statistieken
         Console.Write("Keuze: ");
         
         // Lees wat de gebruiker intypt
-        string keuze = Console.ReadLine();
+        string? keuze = Console.ReadLine();
         
         // Controleer of de gebruiker wil afsluiten (hoofdletter of kleine letter x)
-        if (keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
+        if (keuze != null && keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
         {
             // Sluit de databaseverbinding
-            Program.conn.Close();
+            Program.Conn?.Close();
             
             // Maak het scherm leeg
             Console.Clear();
@@ -39,7 +38,7 @@ public class Statistieken
             // Sluit de applicatie volledig af
             Environment.Exit(0);
             
-        }else if (keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
+        }else if (keuze != null && keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
             
             MainMenu.HoofdMenu();
             
@@ -82,7 +81,7 @@ public class Statistieken
             "ORDER BY AantalBestellingen DESC";
         
         
-        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
         {
             using MySqlDataReader reader = cmd.ExecuteReader();
             
@@ -122,7 +121,8 @@ public class Statistieken
                     int balkLengte = (int)((aantal / (double)max) * maxBalkBreedte);
                     string balk    = new string('█', balkLengte);
             
-                    rijen.Add(new List<string> { id.ToString(), naam, balk, aantal.ToString() });
+                    //rijen.Add(new List<string> { id.ToString(), naam, balk, aantal.ToString() });
+                    rijen.Add([id.ToString(), naam, balk, aantal.ToString()]);
                 }
         
                 // Gebruik DrawTable zoals gewoonlijk
@@ -135,7 +135,7 @@ public class Statistieken
         }
     }
 
-    public static void PngGrafiek()
+    private static void PngGrafiek()
     {
         string sql =
             "SELECT klanten.KlantID, klanten.KlantNaam, COUNT(bestellingen.BestellingID) AS AantalBestellingen " +
@@ -148,7 +148,7 @@ public class Statistieken
         var namen   = new List<string>();
         var aantallen = new List<double>();
 
-        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
         {
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -165,7 +165,8 @@ public class Statistieken
         var plt = new ScottPlot.Plot();
 
         // Maak de staafdiagram
-        var bar = plt.Add.Bars(aantallen.ToArray());
+        //var bar = plt.Add.Bars(aantallen.ToArray());
+        plt.Add.Bars(aantallen.ToArray());
 
         // Rotated Tick Labels — klantnamen schuin weergeven
         ScottPlot.Tick[] ticks = namen.Select((naam, i) => new ScottPlot.Tick(i, naam)).ToArray();

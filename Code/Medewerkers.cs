@@ -29,7 +29,7 @@ public class Medewerkers
         if (keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
         {
             // Sluit de databaseverbinding
-            Program.conn.Close();
+            Program.Conn.Close();
             
             // Maak het scherm leeg
             Console.Clear();

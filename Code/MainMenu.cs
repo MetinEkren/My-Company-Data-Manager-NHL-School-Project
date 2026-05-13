@@ -1,20 +1,20 @@
 namespace DataBaseProject.Code;
 
-public class MainMenu
+public static class MainMenu
 {
     public static void HoofdMenu()
     {
-        // Maak het scherm leeg zodat het hoofdmenu niet meer zichtbaar is
+        // Maak het scherm leeg zodat de vorige gegevens niet meer zichtbaar is
         Console.Clear();
         
-        // Maak een array aan met alle menuopties
-        var hoofdMenulines = new[]
+        // Maak een array aan met alle menuopties 
+        var hoofdMenuOpties = new[]
         {
             "1) Klanten",
             "2) Producten (Werkt nog niet)",
             "3) Bestellingen (Werkt nog niet)",
             "4) Medewerkers (Werkt nog niet)",
-            "5) Levenranciers (Werkt nog niet)",
+            "5) Leveranciers (Werkt nog niet)",
             "6) Categorieen (Werkt nog niet)",
             "7) Bestelregels (Werkt nog niet)",
             "8) Verzenddiensten (Werkt nog niet)",
@@ -22,26 +22,26 @@ public class MainMenu
             "X) Afsluiten"
         };
         
-        // Teken de box met het hoofdmenu en de titel
-        BoxDraw.DrawBox(hoofdMenulines, titel: "Welkom bij Bedrijf Data Manager");
+        // Teken de box met het hoofdmenu opties en de titel
+        BoxDraw.DrawBox(hoofdMenuOpties, titel: "Welkom bij Bedrijf Data Manager");
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");
         
         // Lees wat de gebruiker intypt
-        string keuze = Console.ReadLine();
+        string? keuze = Console.ReadLine();
         
         // Controleer of de gebruiker wil afsluiten (hoofdletter of kleine letter x)
-        if (keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
+        if (keuze != null && keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
         {
             // Sluit de databaseverbinding
-            Program.conn.Close();
+            Program.Conn?.Close();
             
             // Maak het scherm leeg
             Console.Clear();
             
             // Toon een afscheidsbericht 
-            Console.WriteLine("Totziens!");
+            Console.WriteLine("Tot ziens!");
             
             // Sluit de applicatie volledig af
             Environment.Exit(0);
@@ -66,7 +66,7 @@ public class MainMenu
                     // Maak het scherm leeg
                     Console.Clear();
                     
-                    // Vertel de gebruiker dat de keuze ongeldig is
+                    // Vertelt de gebruiker dat de keuze ongeldig is
                     Console.WriteLine("Ongeldige keuze, probeer opnieuw. Gebruik de cijfers!!!!");
 
                     // Wacht totdat de gebruiker op een toets drukt

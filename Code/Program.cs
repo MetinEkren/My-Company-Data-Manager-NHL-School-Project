@@ -1,21 +1,21 @@
 ﻿using MySqlConnector;
-using System;
 using DataBaseProject.Code;
 
-class Program
+internal static class Program
 {
-    public static MySqlConnection conn;
+    public static MySqlConnection? Conn;
     static void Main()
     {
-        string databasename = "webwinkel";
+        //De parameters voor de database communicatie 
+        string database = "webwinkel";
         string username     = "root";
         string password     = "3561";
         string server       = "localhost";
         string port         = "3306";
-        string connectionString = $"Server={server};Port={port};Database={databasename};Uid={username};Pwd={password};";
+        string connectionString = $"Server={server};Port={port};Database={database};Uid={username};Pwd={password};";
 
-        conn = new MySqlConnection(connectionString);
-        conn.Open();
+        Conn = new MySqlConnection(connectionString);
+        Conn.Open();
 
         MainMenu.HoofdMenu();
     }

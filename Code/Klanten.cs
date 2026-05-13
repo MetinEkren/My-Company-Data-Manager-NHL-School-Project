@@ -1,11 +1,11 @@
 namespace DataBaseProject.Code;
 using MySqlConnector;
 
-public class Klanten
+public static class Klanten
 {
     public static void KlantenMenu()
     {
-        // Maak het scherm leeg zodat het hoofdmenu niet meer zichtbaar is
+        // Maak het scherm leeg zodat het hoofdmenu of andere teksten niet meer zichtbaar is
         Console.Clear();
         
         // Maak een array aan met alle menuopties
@@ -28,13 +28,13 @@ public class Klanten
         Console.Write("Keuze: ");
         
         // Lees wat de gebruiker intypt
-        string keuze = Console.ReadLine();
+        string? keuze = Console.ReadLine();
         
         // Controleer of de gebruiker wil afsluiten (hoofdletter of kleine letter x)
-        if (keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
+        if (keuze != null && keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
         {
             // Sluit de databaseverbinding
-            Program.conn.Close();
+            Program.Conn?.Close();
             
             // Maak het scherm leeg
             Console.Clear();
@@ -45,8 +45,9 @@ public class Klanten
             // Sluit de applicatie volledig af
             Environment.Exit(0);
             
-        }else if (keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
+        }else if (keuze != null && keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
             
+            // gaat terug naar hooftmenu 
             MainMenu.HoofdMenu();
             
         }else {
@@ -80,11 +81,12 @@ public class Klanten
         }
     }
     
+    //Methode om klanten gegevens te toonen 
     private static void Keuzeklanten()
     {
         Console.Clear();
         
-        // Maak een array aan met alle menuopties
+        // Maakt een array aan met alle menuopties
         var klantenkeuze = new[]
         {
             "1) Toon alle klanten",
@@ -96,47 +98,50 @@ public class Klanten
         // Teken de box met het KlantenMenu en de titel
         BoxDraw.DrawBox(klantenkeuze, titel: "Klanten");
         
-        // Vraag de gebruiker om een keuze te maken
+        // Vraagt de gebruiker om een keuze te maken
         Console.Write("Keuze: ");
         
         // Lees wat de gebruiker intypt
-        string keuze = Console.ReadLine();
+        string? keuze = Console.ReadLine();
 
+        //controleren welke keuze je heeft ingetypt
         Controlekeuze(keuze);
     }
     
-    private static void Controlekeuze(string keuze)
+    private static void Controlekeuze(string? keuze)
     {
-        // Controleer of de gebruiker wil afsluiten (hoofdletter of kleine letter x)
-        if (keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
+        // Controleert of de gebruiker wil afsluiten (hoofdletter of kleine letter x)
+        if (keuze != null && keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
         {
             // Sluit de databaseverbinding
-            Program.conn.Close();
+            Program.Conn?.Close();
             
-            // Maak het scherm leeg
+            // Maakt het scherm leeg
             Console.Clear();
             
-            // Toon een afscheidsbericht 
+            // Toont een afscheidsbericht 
             Console.WriteLine("Totziens!");
             
             // Sluit de applicatie volledig af
             Environment.Exit(0);
             
-        }else if (keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
+        }else if (keuze != null && keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
             
+            //gaat een keuze terug naar klantenmenu 
             KlantenMenu();
             
         }else
         {
-            string sql = "";
-            // Verwerk de keuze van de gebruiker
+            string sql;
+            
+            // Verwerkt de keuze van de gebruiker
             switch (keuze)
             {
-                // Haal ALLES op uit de klanten tabel
+                // Haalt ALLES op uit de klanten tabel
                 case "1":
                     sql = "SELECT * FROM Klanten"; SqlklantUitvoeren(keuze, sql);break;
                 
-                // Maak de SQL query aan toon id en naam
+                // Maakt de SQL-query aan toon id en naam
                 case "2": 
                     sql = "SELECT KlantID, KlantNaam FROM Klanten"; SqlklantUitvoeren(keuze, sql);  break;
                 default:
@@ -157,11 +162,14 @@ public class Klanten
             }
         }
     }
+    
+    // methode om sql query uit te voeren met de keuze 
     private static void SqlklantUitvoeren(string keuze, string sql)
     {
+        //maakt het beeld leeg
         Console.Clear();
         
-        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
         {
             MySqlDataReader reader = cmd.ExecuteReader();
             
@@ -178,9 +186,10 @@ public class Klanten
         
             while (reader.Read())
             {
+                // met keuze 1 toont hij alle gegevens
                 if (keuze == "1")
                 {
-                    var rij = new List<string>();
+                    var rij = new List<string?>();
             
                     // Loop door elke kolom en lees de waarde
                     for (int i = 0; i < reader.FieldCount; i++)
@@ -189,17 +198,19 @@ public class Klanten
                         // IsDBNull controleert of de waarde leeg (NULL) is
                         rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
                     }
-            
-                    rijen.Add(rij);
                     
-                }else if (keuze == "2")
+                    // ! is om die waarschuwing weg te halen heel erg irritant 
+                    rijen.Add(rij!);
+                    
+                }else if (keuze == "2")// met 2 aleen id en naam
                 {
                     // Lees de KlantID en KlantNaam uit elke rij
                     int id       = reader.GetInt32("KlantID");
                     string naam  = reader.GetString("KlantNaam");
                     
                     // Elke rij is een lijst van strings
-                    rijen.Add(new List<string> { id.ToString(), naam });
+                    // rijen.Add(new List<string> { id.ToString(), naam });
+                    rijen.Add([id.ToString(), naam]);
                 }
             }
             
@@ -215,15 +226,18 @@ public class Klanten
         }
     }
     
+    //methode om een klant te zoeken via naam
     private static void ZoekKlant()
     {
         string klantNaam = LeesVerplichtVeld("Zoek op KlantNaam: ");
 
+        //maakt het beeld weer leeg
         Console.Clear();
         
+        // sql code om een klant te zoeken bassert op naam
         string sql = "SELECT * FROM Klanten WHERE KlantNaam LIKE @zoekKlant";
         
-        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
         {
             // @zoekKlant tegen sql injectie
             cmd.Parameters.AddWithValue("@zoekKlant", "%" + klantNaam + "%");
@@ -232,6 +246,7 @@ public class Klanten
             // Haal automatisch alle kolomnamen op uit de database
             var (kolomNamen, rijen) = KollomenEnRijen(reader);
             
+            //geen klanten met die naam 
             if (rijen.Count == 0)
             {
                 Console.Clear();
@@ -240,7 +255,7 @@ public class Klanten
                 Console.ReadKey();
                 KlantenMenu();
             }
-            else
+            else // wel gevonden
             {
                 BoxDraw.DrawTable(kolomNamen, rijen, titel: "Zoekresultaten");
                 Console.WriteLine("Druk op een toets om terug te gaan...");
@@ -250,21 +265,23 @@ public class Klanten
         }
     }
 
-    public static (List<string> kolomNamen, List<List<string>> rijen) KollomenEnRijen(MySqlDataReader reader)
+    // een methode om gegevens op te halen van de database en dit sla hij op in verschllenden rijen
+    private static (List<string> kolomNamen, List<List<string>> rijen) KollomenEnRijen(MySqlDataReader reader)
     {
         var kolomNamen = new List<string>();
+        //pakt elke kolom en met reader.FieldCount telt hij op hoeveel kolomen/field er zijn
         for (int i = 0; i < reader.FieldCount; i++)
         {
             // reader.GetName() geeft de naam van elke kolom
             kolomNamen.Add(reader.GetName(i));
         }
             
-        // Alle rijen met data / Lees alle rijen uit de database
+        // Alle rijen met data
         var rijen = new List<List<string>>();
-            
+        
         while (reader.Read())
         {
-            var rij = new List<string>();
+            var rij = new List<string?>();
                 
             // Loop door elke kolom en lees de waarde
             for (int i = 0; i < reader.FieldCount; i++)
@@ -274,18 +291,24 @@ public class Klanten
                 // Als het niet leeg is zet de waarde om naar tekst met ToString() en voeg het toe
                 rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
             }
-            
-            rijen.Add(rij);
+            // toevoegt elke rij in een andere rij naamt rijen.
+            rijen.Add(rij!);
         }
+        
         reader.Close();
+        
+        // geeft rij met namen van kolomen en rij van rijen
         return (kolomNamen, rijen);
     }
     
+    // met deze methode kan je een nieuwe klant toevoegen
     private static void VoegKlantToe()
     {
         Console.Clear();
         Console.WriteLine("Geef elke vraag een antwoord");
         
+        // LeesVerplichtVeld is een recursie methode die steeds dezelfde vraag vraagt tot dat er een waarde is ingevuld
+        // en deze waarde wordt opgeslagen in een parameter
         string naam     = LeesVerplichtVeld("Wat is de KlantNaam: ");
         string contact  = LeesVerplichtVeld("Wie is de ContactPersoon: ");
         string adres    = LeesVerplichtVeld("Wat is zijn of haar Adres: ");
@@ -293,11 +316,13 @@ public class Klanten
         string postcode = LeesVerplichtVeld("Wat is zijn of haar Postcode: ");
         string land     = LeesVerplichtVeld("Welke Land: ");
 
+        //sql code 
         string sql = "INSERT INTO Klanten (KlantNaam, ContactPersoon, Adres, Stad, Postcode, Land) " +
                      "VALUES (@naam, @contact, @adres, @stad, @postcode, @land)";
         
-        using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
         {
+            //parameters wordt gekopelt met de sql values
             cmd.Parameters.AddWithValue("@naam", naam);
             cmd.Parameters.AddWithValue("@contact", contact);
             cmd.Parameters.AddWithValue("@adres", adres);
@@ -307,6 +332,8 @@ public class Klanten
             
             // ExecuteNonQuery werkt voor INSERT, UPDATE, DELETE
             cmd.ExecuteNonQuery();
+            
+            // tont laatste klant die toegevoegt is
             Console.WriteLine("Klant toegevoegd! Nieuw ID: " + cmd.LastInsertedId);
             
             Console.WriteLine("Druk op een toets om terug te gaan...");
@@ -315,10 +342,10 @@ public class Klanten
         }
     }
     
-    //een methode om zekker te weten dat we een waarde krijgen
+    //een methode om zekker te weten dat je een waarde krijgen
     private static string LeesVerplichtVeld(string vraag)
     {
-        string invoer;
+        string? invoer;
     
         do
         {
@@ -332,32 +359,38 @@ public class Klanten
                 Console.WriteLine("Dit veld is verplicht! Probeer opnieuw.");
             }
         
-        } while (string.IsNullOrWhiteSpace(invoer));
+        } while (string.IsNullOrWhiteSpace(invoer));// blijf loopen els hij geen waarde heeft string.IsNullOrWhiteSpace(invoer) == true blijf loopen
     
         // Verwijder spaties aan het begin en einde
         return invoer.Trim();
     }
     
+    //dit is een methode om klanten gegevens te wijzigen
     private static void WijzigKlant()
     {
         Console.Clear();
         
         Console.Write("KlantID om te wijzigen: ");
-        string klantStringIdInvoer = Console.ReadLine();
+        string? klantStringIdInvoer = Console.ReadLine();
+        
+        // van string naar int en sla dat op in klantIntId
         int.TryParse(klantStringIdInvoer, out int klantIntId);
         
         
         // klant gegevens ophalen
         string sqlSelect = "SELECT * FROM Klanten WHERE KlantID = @klantIdInvoer";
         
-        using (MySqlCommand cmd = new MySqlCommand(sqlSelect, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sqlSelect, Program.Conn))
         {
             cmd.Parameters.AddWithValue("@klantIdInvoer", klantIntId);
+            
+            //voegt het uit
             using MySqlDataReader reader = cmd.ExecuteReader();
             
             // Haal automatisch alle kolomnamen op uit de database
             var (kolomNamen, rijen) = KollomenEnRijen(reader);
             
+            //klanten niet gevonden
             if (rijen.Count == 0)
             {
                 Console.Clear();
@@ -366,7 +399,7 @@ public class Klanten
                 Console.ReadKey();
                 KlantenMenu();
             }
-            else
+            else// gevonden
             {
                 BoxDraw.DrawTable(kolomNamen, rijen, titel: "Selecteerde Klant");
                 KlantWijzigenMenu(klantIntId);
@@ -395,20 +428,21 @@ public class Klanten
         
         // Vraag de gebruiker om een keuze te maken
         Console.Write("Keuze: ");
+        
         // Lees wat de gebruiker intypt
-        string keuze = Console.ReadLine();
+        string? keuze = Console.ReadLine();
         
         KlantWijzigenKeuze(keuze, klantIntId);
 
     }
 
-    private static void KlantWijzigenKeuze(string keuze, int klantIntId)
+    private static void KlantWijzigenKeuze(string? keuze, int klantIntId)
     {
         // Controleer of de gebruiker wil afsluiten (hoofdletter of kleine letter x)
-        if (keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
+        if (keuze != null && keuze.Equals("x", StringComparison.OrdinalIgnoreCase))
         {
             // Sluit de databaseverbinding
-            Program.conn.Close();
+            Program.Conn?.Close();
             
             // Maak het scherm leeg
             Console.Clear();
@@ -419,13 +453,13 @@ public class Klanten
             // Sluit de applicatie volledig af
             Environment.Exit(0);
             
-        }else if (keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
+        }else if (keuze != null && keuze.Equals("r", StringComparison.OrdinalIgnoreCase)) {
             
             KlantenMenu();
             
         }else
         {
-            string sql = "";
+            string sql;
             string waarde ="";
             
             // Verwerk de keuze van de gebruiker
@@ -516,7 +550,7 @@ public class Klanten
             string postcode = LeesVerplichtVeld("Nieuwe waarde voor Postcode: ");
             string land     = LeesVerplichtVeld("Nieuwe waarde voor Land: ");
             
-            using (MySqlCommand updateCmd = new MySqlCommand(sql, Program.conn))
+            using (MySqlCommand updateCmd = new MySqlCommand(sql, Program.Conn))
             {
                 updateCmd.Parameters.AddWithValue("@KlantNaamWaarde", naam);
                 updateCmd.Parameters.AddWithValue("@ContactPersoonWaarde", contact);
@@ -537,7 +571,7 @@ public class Klanten
         }
         else
         {
-            using (MySqlCommand updateCmd = new MySqlCommand(sql, Program.conn))
+            using (MySqlCommand updateCmd = new MySqlCommand(sql, Program.Conn))
             {
                 updateCmd.Parameters.AddWithValue("@waarde", waarde);
                 updateCmd.Parameters.AddWithValue("@klantIdInvoer", klantIntId);
@@ -559,14 +593,14 @@ public class Klanten
         Console.Clear();
         
         Console.Write("KlantID om te verwijderen: ");
-        string klantStringIdInvoer = Console.ReadLine();
+        string? klantStringIdInvoer = Console.ReadLine();
         int.TryParse(klantStringIdInvoer, out int klantIntId);
         
         
         // klant gegevens ophalen
         string sqlSelect = "SELECT * FROM Klanten WHERE KlantID = @klantIdInvoer";
         
-        using (MySqlCommand cmd = new MySqlCommand(sqlSelect, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sqlSelect, Program.Conn))
         {
             cmd.Parameters.AddWithValue("@klantIdInvoer", klantIntId);
             using MySqlDataReader reader = cmd.ExecuteReader();
@@ -574,6 +608,7 @@ public class Klanten
             // Haal automatisch alle kolomnamen op uit de database
             var (kolomNamen, rijen) = KollomenEnRijen(reader);
             
+            //geen klant gevonden
             if (rijen.Count == 0)
             {
                 Console.Clear();
@@ -584,27 +619,30 @@ public class Klanten
             }
             else
             {
+                //wel gevonden laat hij de klant zien
                 BoxDraw.DrawTable(kolomNamen, rijen, titel: "Selecteerde Klant");
+                //methode verwijder 
                 Verwijder(klantIntId);
             }
         }
     }
 
+    // met deze methoden wordt eerst gevraagd of hij dit wil verijderen, wel zo dan voert hij dat uit
     private static void Verwijder(int klantIntId)
     {
-        string JaNee = LeesVerplichtVeld("Weet je zeker dat je klant " + klantIntId + " wilt verwijderen? (j/n): ");
+        string jaNee = LeesVerplichtVeld("Weet je zeker dat je klant " + klantIntId + " wilt verwijderen? (j/n): ");
         
-        if (JaNee.ToLower() == "n")
+        if (jaNee.ToLower() == "n")
         {
             Console.WriteLine("Geannuleerd.");
             Console.ReadKey();
             KlantenMenu();
             
-        }else if (JaNee.ToLower() == "j")
+        }else if (jaNee.ToLower() == "j")
         {
             string sql = "DELETE FROM Klanten WHERE KlantID = @klantIdInvoer";
 
-            using (MySqlCommand cmd = new MySqlCommand(sql, Program.conn))
+            using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
             {
                 cmd.Parameters.AddWithValue("@klantIdInvoer", klantIntId);
                 
@@ -635,20 +673,20 @@ public class Klanten
             Verwijder(klantIntId);
         }
     }
-    
+    // deze methode toont welke bestelingen en klant heeft
     private static void BestelingenMetKlant()
     {
         Console.Clear();
         
         Console.Write("Van welke Klant wilt u de bestelingen zien vul KlantID in: ");
-        string klantStringIdInvoer = Console.ReadLine();
+        string? klantStringIdInvoer = Console.ReadLine();
         int.TryParse(klantStringIdInvoer, out int klantIntId);
         
         
         // klant gegevens ophalen
         string sqlSelect = "SELECT klanten.KlantID, klanten.KlantNaam, bestellingen.BestellingID, bestellingen.BestelDatum FROM klanten INNER JOIN bestellingen ON klanten.KlantID = bestellingen.KlantID WHERE klanten.KlantID = @klantIdInvoer";
         
-        using (MySqlCommand cmd = new MySqlCommand(sqlSelect, Program.conn))
+        using (MySqlCommand cmd = new MySqlCommand(sqlSelect, Program.Conn))
         {
             cmd.Parameters.AddWithValue("@klantIdInvoer", klantIntId);
             using MySqlDataReader reader = cmd.ExecuteReader();
