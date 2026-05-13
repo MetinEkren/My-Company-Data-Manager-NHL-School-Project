@@ -118,6 +118,7 @@ public static class Statistieken
                 
                 foreach (var (id, naam, aantal) in data)
                 {
+                    //berekening van powerpoint geen idee waarom dit nodig is 
                     int balkLengte = (int)((aantal / (double)max) * maxBalkBreedte);
                     string balk    = new string('█', balkLengte);
             
@@ -161,10 +162,10 @@ public static class Statistieken
             reader.Close();
         }
 
-        // Maak de ScottPlot grafiek aan
+        // Maakt de ScottPlot grafiek aan
         var plt = new ScottPlot.Plot();
 
-        // Maak de staafdiagram
+        // Maakt de staafdiagram
         //var bar = plt.Add.Bars(aantallen.ToArray());
         plt.Add.Bars(aantallen.ToArray());
 
