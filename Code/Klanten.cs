@@ -229,6 +229,9 @@ public static class Klanten
     //methode om een klant te zoeken via naam
     private static void ZoekKlant()
     {
+        //maakt het beeld weer leeg
+        Console.Clear();
+        
         string klantNaam = LeesVerplichtVeld("Zoek op KlantNaam: ");
 
         //maakt het beeld weer leeg

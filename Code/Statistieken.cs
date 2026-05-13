@@ -5,6 +5,9 @@ public static class Statistieken
 {
      public static void StatistiekenMenu()
     {
+        //maakt het beeld weer leeg
+        Console.Clear();
+        
         // Maak een array aan met alle menuopties
         var statistiekenMenulines = new[]
         {
@@ -95,6 +98,8 @@ public static class Statistieken
                 
                 data.Add((id, naam, aantal));
             }
+            
+            reader.Close();
         
             if (data.Count == 0)
             {
@@ -185,7 +190,11 @@ public static class Statistieken
 
         // Sla op als PNG bestand
         plt.SavePng(@"D:\download(D)\bestellingen_grafiek.png", 1500, 1000);
-
+        
+        Console.Clear();
         Console.WriteLine("Grafiek opgeslagen als bestellingen_grafiek.png");
+        Console.WriteLine("Druk op een toets om terug te gaan...");
+        Console.ReadKey();
+        StatistiekenMenu();
     }
 }
