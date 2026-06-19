@@ -139,7 +139,7 @@ public static class Klanten
             {
                 // Haalt ALLES op uit de klanten tabel
                 case "1":
-                    sql = "SELECT * FROM Klanten"; SqlklantUitvoeren(keuze, sql);break;
+                    sql = "SELECT * FROM Klanten LIMIT @limiet OFFSET @offset"; SqlklantUitvoeren(keuze, sql);break;
                 
                 // Maakt de SQL-query aan toon id en naam
                 case "2": 
@@ -166,63 +166,133 @@ public static class Klanten
     // methode om sql query uit te voeren met de keuze 
     private static void SqlklantUitvoeren(string keuze, string sql)
     {
-        //maakt het beeld leeg
         Console.Clear();
+        int pageSize = 10;
+        int pagina = 1;
         
-        using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
+        // Bereken het totaal aantal klanten voor de paginering
+        string sqlTotaal = "SELECT COUNT(*) FROM Klanten";
+        int totaalKlanten;
+    
+        using (MySqlCommand cmdTotaal = new MySqlCommand(sqlTotaal, Program.Conn))
         {
-            MySqlDataReader reader = cmd.ExecuteReader();
+            totaalKlanten = Convert.ToInt32(cmdTotaal.ExecuteScalar());
+        }
+    
+        // Bereken het totaal aantal paginas
+        // Math.Ceiling rondt altijd OMHOOG af
+        // 23 klanten / 10 per pagina = 2.3 is 3 paginas
+        int totaalPaginas = (int)Math.Ceiling((double)totaalKlanten / pageSize);
+
+        while (true)
+        {
+            Console.Clear();
             
-            // Haal automatisch alle kolomnamen op uit de database
-            var kolomNamen = new List<string>();
-            for (int i = 0; i < reader.FieldCount; i++)
+            using (MySqlCommand cmd = new MySqlCommand(sql, Program.Conn))
             {
-                // reader.GetName() geeft de naam van elke kolom
-                kolomNamen.Add(reader.GetName(i));
+                cmd.Parameters.AddWithValue("@limiet", pageSize);
+                cmd.Parameters.AddWithValue("@offset", (pagina - 1) * pageSize);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                // Haal automatisch alle kolomnamen op uit de database
+                var kolomNamen = new List<string>();
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    // reader.GetName() geeft de naam van elke kolom
+                    kolomNamen.Add(reader.GetName(i));
+                }
+
+                // Alle rijen met data / Lees alle rijen uit de database
+                var rijen = new List<List<string>>();
+
+                while (reader.Read())
+                {
+                    // met keuze 1 toont hij alle gegevens
+                    if (keuze == "1")
+                    {
+                        var rij = new List<string?>();
+
+                        // Loop door elke kolom en lees de waarde
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            // Zet elke waarde om naar string
+                            // IsDBNull controleert of de waarde leeg (NULL) is
+                            rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
+                        }
+
+                        // ! is om die waarschuwing weg te halen heel erg irritant 
+                        rijen.Add(rij!);
+
+                    }
+                    else if (keuze == "2") // met 2 aleen id en naam
+                    {
+                        // Lees de KlantID en KlantNaam uit elke rij
+                        int id = reader.GetInt32("KlantID");
+                        string naam = reader.GetString("KlantNaam");
+
+                        // Elke rij is een lijst van strings
+                        // rijen.Add(new List<string> { id.ToString(), naam });
+                        rijen.Add([id.ToString(), naam]);
+                    }
+                }
+
+                reader.Close();
+
+                // Teken de tabel
+                BoxDraw.DrawTable(kolomNamen, rijen, titel: "Alle Klanten");
             }
             
-            // Alle rijen met data / Lees alle rijen uit de database
-            var rijen = new List<List<string>>();
-        
-            while (reader.Read())
-            {
-                // met keuze 1 toont hij alle gegevens
-                if (keuze == "1")
-                {
-                    var rij = new List<string?>();
+            //pagina kieze
+            Console.WriteLine("Pagina " + pagina + " van " + totaalPaginas );
+            Console.WriteLine("V) Vorige pagina  |  N) Volgende pagina  |  R) Terug");
+            Console.Write("Keuze: ");
+            string? input = Console.ReadLine();
             
-                    // Loop door elke kolom en lees de waarde
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        // Zet elke waarde om naar string
-                        // IsDBNull controleert of de waarde leeg (NULL) is
-                        rij.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i).ToString());
-                    }
-                    
-                    // ! is om die waarschuwing weg te halen heel erg irritant 
-                    rijen.Add(rij!);
-                    
-                }else if (keuze == "2")// met 2 aleen id en naam
+            if (input != null && input.Equals("r", StringComparison.OrdinalIgnoreCase))
+            {
+                // Ga terug naar keuzeklanten
+                Keuzeklanten();
+                return;
+            }
+            else if (input != null && input.Equals("n", StringComparison.OrdinalIgnoreCase))
+            {
+                // Volgende pagina — maar niet voorbij de laatste pagina
+                if (pagina < totaalPaginas)
                 {
-                    // Lees de KlantID en KlantNaam uit elke rij
-                    int id       = reader.GetInt32("KlantID");
-                    string naam  = reader.GetString("KlantNaam");
-                    
-                    // Elke rij is een lijst van strings
-                    // rijen.Add(new List<string> { id.ToString(), naam });
-                    rijen.Add([id.ToString(), naam]);
+                    pagina++;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Je bent al op de laatste pagina!");
+                    Console.WriteLine("Druk op een toets om verder te gaan...");
+                    Console.ReadKey();
                 }
             }
-            
-            reader.Close();
-            
-            // Teken de tabel
-            BoxDraw.DrawTable(kolomNamen, rijen, titel: "Alle Klanten");
-            
-            Console.WriteLine("Druk op een toets om terug te gaan...");
-            Console.ReadKey();
-            
-            Keuzeklanten();
+            else if (input != null && input.Equals("v", StringComparison.OrdinalIgnoreCase))
+            {
+                // Vorige pagina — maar niet voor de eerste pagina
+                if (pagina > 1)
+                {
+                    pagina--;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Je bent al op de eerste pagina!");
+                    Console.WriteLine("Druk op een toets om verder te gaan...");
+                    Console.ReadKey();
+                }
+            }
+            else
+            {
+                Console.Clear();
+                // Vertel de gebruiker dat de keuze ongeldig is
+                Console.WriteLine("Ongeldige keuze, probeer opnieuw. Gebruik de V/N of R !!!!");
+                Console.WriteLine("Druk op een toets om verder te gaan...");
+                Console.ReadKey();
+            }
         }
     }
     

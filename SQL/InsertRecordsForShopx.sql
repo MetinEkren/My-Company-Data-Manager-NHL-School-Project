@@ -1,4 +1,3 @@
--- Realistische dataset gegenereerd met Faker (nl_NL)
 DROP DATABASE IF EXISTS Webwinkel;
 CREATE DATABASE Webwinkel;
 
