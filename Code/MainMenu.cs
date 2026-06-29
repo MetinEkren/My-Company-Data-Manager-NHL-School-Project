@@ -51,7 +51,7 @@ public static class MainMenu
             // Verwerk de keuze van de gebruiker
             switch (keuze)
             {
-                case "1": Console.Clear(); Klanten.KlantenMenu(); break;
+                case "1": Console.Clear(); Klanten.KlantenMenu(); break;//Werkt
                 case "2": Console.Clear(); Producten.ProductenMenu(); break;
                 case "3": Console.Clear(); Bestellingen.BestellingenMenu(); break;
                 case "4": Console.Clear(); Medewerkers.MedewerkersMenu(); break;
@@ -59,7 +59,7 @@ public static class MainMenu
                 case "6": Console.Clear(); Categorieen.CategorieenMenu(); break;
                 case "7": Console.Clear(); BestelRegels.BestelRegelsMenu(); break;
                 case "8": Console.Clear(); VerzendDiensten.VerzendDienstenMenu(); break;
-                case "9": Console.Clear(); Statistieken.StatistiekenMenu(); break;
+                case "9": Console.Clear(); Statistieken.StatistiekenMenu(); break; //Werkt
                 
                 default:
                     

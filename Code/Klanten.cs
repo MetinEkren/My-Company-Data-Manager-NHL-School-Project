@@ -60,7 +60,7 @@ public static class Klanten
                 case "3": VoegKlantToe(); break;
                 case "4": WijzigKlant(); break;
                 case "5": VerwijderKlant(); break;
-                case "6": BestelingenMetKlant(); break;
+                case "6": BestellingenMetKlant(); break;
                 
                 default:
                     
@@ -143,7 +143,7 @@ public static class Klanten
                 
                 // Maakt de SQL-query aan toon id en naam
                 case "2": 
-                    sql = "SELECT KlantID, KlantNaam FROM Klanten"; SqlklantUitvoeren(keuze, sql);  break;
+                    sql = "SELECT KlantID, KlantNaam FROM Klanten LIMIT @limiet OFFSET @offset"; SqlklantUitvoeren(keuze, sql);  break;
                 default:
                     
                     // Maak het scherm leeg
@@ -225,7 +225,7 @@ public static class Klanten
                         rijen.Add(rij!);
 
                     }
-                    else if (keuze == "2") // met 2 aleen id en naam
+                    else if (keuze == "2") // met 2 alleen id en naam
                     {
                         // Lees de KlantID en KlantNaam uit elke rij
                         int id = reader.GetInt32("KlantID");
@@ -317,7 +317,7 @@ public static class Klanten
             using MySqlDataReader reader = cmd.ExecuteReader();
             
             // Haal automatisch alle kolomnamen op uit de database
-            var (kolomNamen, rijen) = KollomenEnRijen(reader);
+            var (kolomNamen, rijen) = KolommenEnRijen(reader);
             
             //geen klanten met die naam 
             if (rijen.Count == 0)
@@ -339,10 +339,10 @@ public static class Klanten
     }
 
     // een methode om gegevens op te halen van de database en dit sla hij op in verschllenden rijen
-    private static (List<string> kolomNamen, List<List<string>> rijen) KollomenEnRijen(MySqlDataReader reader)
+    private static (List<string> kolomNamen, List<List<string>> rijen) KolommenEnRijen(MySqlDataReader reader)
     {
         var kolomNamen = new List<string>();
-        //pakt elke kolom en met reader.FieldCount telt hij op hoeveel kolomen/field er zijn
+        //pakt elke kolom en met reader.FieldCount telt hij op hoeveel kolommen/field er zijn
         for (int i = 0; i < reader.FieldCount; i++)
         {
             // reader.GetName() geeft de naam van elke kolom
@@ -370,7 +370,7 @@ public static class Klanten
         
         reader.Close();
         
-        // geeft rij met namen van kolomen en rij van rijen
+        // geeft rij met namen van kolommen en rij van rijen
         return (kolomNamen, rijen);
     }
     
@@ -389,7 +389,7 @@ public static class Klanten
         string postcode = LeesVerplichtVeld("Wat is zijn of haar Postcode: ");
         string land     = LeesVerplichtVeld("Welke Land: ");
 
-        //sql code 
+        // SQL code 
         string sql = "INSERT INTO Klanten (KlantNaam, ContactPersoon, Adres, Stad, Postcode, Land) " +
                      "VALUES (@naam, @contact, @adres, @stad, @postcode, @land)";
         
@@ -406,7 +406,7 @@ public static class Klanten
             // ExecuteNonQuery werkt voor INSERT, UPDATE, DELETE
             cmd.ExecuteNonQuery();
             
-            // tont laatste klant die toegevoegt is
+            // tont laatste klant die toegevoegd is
             Console.WriteLine("Klant toegevoegd! Nieuw ID: " + cmd.LastInsertedId);
             
             Console.WriteLine("Druk op een toets om terug te gaan...");
@@ -415,7 +415,7 @@ public static class Klanten
         }
     }
     
-    //een methode om zekker te weten dat je een waarde krijgen
+    //een methode om zeker te weten dat je een waarde krijgen
     private static string LeesVerplichtVeld(string vraag)
     {
         string? invoer;
@@ -432,7 +432,7 @@ public static class Klanten
                 Console.WriteLine("Dit veld is verplicht! Probeer opnieuw.");
             }
         
-        } while (string.IsNullOrWhiteSpace(invoer));// blijf loopen els hij geen waarde heeft string.IsNullOrWhiteSpace(invoer) == true blijf loopen
+        } while (string.IsNullOrWhiteSpace(invoer));// blijf in loop als hij geen waarde heeft string.IsNullOrWhiteSpace(invoer) == true blijf in loop
     
         // Verwijder spaties aan het begin en einde
         return invoer.Trim();
@@ -461,7 +461,7 @@ public static class Klanten
             using MySqlDataReader reader = cmd.ExecuteReader();
             
             // Haal automatisch alle kolomnamen op uit de database
-            var (kolomNamen, rijen) = KollomenEnRijen(reader);
+            var (kolomNamen, rijen) = KolommenEnRijen(reader);
             
             //klanten niet gevonden
             if (rijen.Count == 0)
@@ -679,7 +679,7 @@ public static class Klanten
             using MySqlDataReader reader = cmd.ExecuteReader();
             
             // Haal automatisch alle kolomnamen op uit de database
-            var (kolomNamen, rijen) = KollomenEnRijen(reader);
+            var (kolomNamen, rijen) = KolommenEnRijen(reader);
             
             //geen klant gevonden
             if (rijen.Count == 0)
@@ -746,12 +746,12 @@ public static class Klanten
             Verwijder(klantIntId);
         }
     }
-    // deze methode toont welke bestelingen en klant heeft
-    private static void BestelingenMetKlant()
+    // deze methode toont welke bestellingen en klant heeft
+    private static void BestellingenMetKlant()
     {
         Console.Clear();
         
-        Console.Write("Van welke Klant wilt u de bestelingen zien vul KlantID in: ");
+        Console.Write("Van welke Klant wilt u de bestellingen zien vul KlantID in: ");
         string? klantStringIdInvoer = Console.ReadLine();
         int.TryParse(klantStringIdInvoer, out int klantIntId);
         
@@ -765,7 +765,7 @@ public static class Klanten
             using MySqlDataReader reader = cmd.ExecuteReader();
             
             // Haal automatisch alle kolomnamen op uit de database
-            var (kolomNamen, rijen) = KollomenEnRijen(reader);
+            var (kolomNamen, rijen) = KolommenEnRijen(reader);
             
             if (rijen.Count == 0)
             {
